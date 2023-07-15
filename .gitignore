@@ -2,8 +2,9 @@
 *.swp
 *.log
 *.ipynb
+*.py
 
 /datasets/*
-!/datasets/sdt2022(2).csv
+!/datasets/sdt2000s.csv
 
 !Analysis.ipynb
