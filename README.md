@@ -14,4 +14,4 @@ Sessão da Tarde fez parte da minha infância e até hoje é um dos meus program
 
 ## Referências
 Os dados foram coletados a partir do [TV Globo Wiki - Filmes exibidos na Sessão da Tarde](https://tvglobo.fandom.com/pt-br/wiki/Lista_de_filmes_exibidos_na_Sess%C3%A3o_da_Tarde), que é mantido por usuários e abriga a coleção de filmes que são exibidos desde 1984 até a data de hoje.
-As informações sobre os filmes coletados foram disponibilizados pelo [The Movie Database](https://www.themoviedb.org.
+As informações sobre os filmes coletados foram disponibilizados pelo [The Movie Database](https://www.themoviedb.org).
