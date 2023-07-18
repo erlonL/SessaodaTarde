@@ -12,6 +12,26 @@ Sessão da Tarde fez parte da minha infância e até hoje é um dos meus program
 - Quantas vezes {X ator} apareceu na Sessão da Tarde? (Adam Sandler, Nicolas Cage, Will Smith, Jackie Chan, ...)
 - Historicamente, quais foram os melhores e os piores filmes passados na Sessão da Tarde?
 
+## Tasks
+
+- [x] Dataset de Filmes passados na Sessão da Tarde
+    - [x] Criação (Scraping)
+    - [x] Limpeza do Dataset
+    - [x] Enriquecimento de informações adicionais
+- [] Informações sobre os filmes
+    - [x] Nota média
+    - [x] Data de lançamento
+    - [x] id para consulta posterior
+    - [x] Título em inglês
+    - [x] Principais atores
+    - [] Gênero e público alvo
+- [] Estudo utilizando o dataset
+    - [] Qual o gênero e o público alvo da maioria dos filmes?
+    - [] Qual ator foi estrela mais vezes? (qual mais apareceu)
+    - [] Quais são o melhor e o pior filme já passado?
+    - [] Tentar prever futuros filmes que passarão.
+
+
 ## Referências
 Os dados foram coletados a partir do [TV Globo Wiki - Filmes exibidos na Sessão da Tarde](https://tvglobo.fandom.com/pt-br/wiki/Lista_de_filmes_exibidos_na_Sess%C3%A3o_da_Tarde), que é mantido por usuários e abriga a coleção de filmes que são exibidos desde 1984 até a data de hoje.
 

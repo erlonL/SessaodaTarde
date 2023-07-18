@@ -6,5 +6,7 @@
 
 /datasets/*
 !/datasets/sdt2000s.csv
+!/datasets/sdtcentury.csv
+!/datasets/sdtcentury2.csv
 
 !Analysis.ipynb
