@@ -18,18 +18,18 @@ Sessão da Tarde fez parte da minha infância e até hoje é um dos meus program
     - [x] Criação (Scraping)
     - [x] Limpeza do Dataset
     - [x] Enriquecimento de informações adicionais
-- [] Informações sobre os filmes
+- [ ] Informações sobre os filmes
     - [x] Nota média
     - [x] Data de lançamento
     - [x] id para consulta posterior
     - [x] Título em inglês
     - [x] Principais atores
-    - [] Gênero e público alvo
-- [] Estudo utilizando o dataset
-    - [] Qual o gênero e o público alvo da maioria dos filmes?
-    - [] Qual ator foi estrela mais vezes? (qual mais apareceu)
-    - [] Quais são o melhor e o pior filme já passado?
-    - [] Tentar prever futuros filmes que passarão.
+    - [ ] Gênero e público alvo
+- [ ] Estudo utilizando o dataset
+    - [ ] Qual o gênero e o público alvo da maioria dos filmes?
+    - [ ] Qual ator foi estrela mais vezes? (qual mais apareceu)
+    - [ ] Quais são o melhor e o pior filme já passado?
+    - [ ] Tentar prever futuros filmes que passarão.
 
 
 ## Referências
