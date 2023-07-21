@@ -4,3 +4,6 @@
 *.ipynb
 *.py
 
+!Analysis.ipynb
+!scraping.ipynb
+!cleaning.ipynb
