@@ -31,6 +31,10 @@ Sessão da Tarde fez parte da minha infância e até hoje é um dos meus program
     - [ ] Quais são o melhor e o pior filme já passado?
     - [ ] Tentar prever futuros filmes que passarão.
 
+## Veja o WIP
+### [Análise de Dados](/sessao_da_tarde/Analysis.ipynb)
+### [Limpeza dos Dados](/sessao_da_tarde/cleaning.ipynb)
+### [Criação dos Dados](/sessao_da_tarde/scraping.ipynb)
 
 ## Referências
 Os dados foram coletados a partir do [TV Globo Wiki - Filmes exibidos na Sessão da Tarde](https://tvglobo.fandom.com/pt-br/wiki/Lista_de_filmes_exibidos_na_Sess%C3%A3o_da_Tarde), que é mantido por usuários e abriga a coleção de filmes que são exibidos desde 1984 até a data de hoje.
