@@ -3,122 +3,170 @@ title: "Sessão da Tarde, vista pelos dados"
 description: "Uma investigação reproduzível sobre décadas de filmes exibidos no programa."
 page-layout: full
 toc: false
+code-tools: false
 image: img/sessaodatarde.jpeg
 ---
 
-::: {.hero}
-::: {.grid}
-::: {.g-col-12 .g-col-lg-7 .hero-copy}
-::: {.eyebrow}
-ESTUDO DE DADOS · TELEVISÃO E CINEMA
+:::: {.home-hero}
+::: {.hero-lead}
+<p class="eyebrow">Televisão · Cinema · Ciência de dados</p>
+
+# O que décadas de filmes revelam sobre a Sessão da Tarde?
 :::
 
-# Sessão da Tarde, vista pelos dados
+::: {.hero-brief}
+Uma memória afetiva também pode ser investigada. Este projeto transforma registros de exibição em uma base estruturada para observar títulos recorrentes, presenças no elenco e o tempo entre lançamento e exibição.
 
-Uma investigação sobre os filmes exibidos no programa: quais títulos voltam à grade, quem aparece com mais frequência e quanto tempo separa o lançamento de uma exibição.
-
-O projeto transforma registros públicos em uma base estruturada, documenta sua curadoria e abre uma análise exploratória reproduzível.
-
-[Começar pela análise](sessao_da_tarde/Analysis.ipynb){.btn .btn-primary .btn-lg} [Entender o projeto](projeto.qmd){.btn .btn-outline-primary .btn-lg}
-:::
-
-::: {.g-col-12 .g-col-lg-5}
-![](img/sessaodatarde.jpeg){.hero-image fig-alt="Identidade visual da Sessão da Tarde"}
-:::
+::: {.hero-actions}
+[Percorrer a análise](sessao_da_tarde/Analysis.ipynb){.btn .btn-primary .btn-lg}
+[Entender o projeto](projeto.qmd){.hero-text-link}
 :::
 :::
 
-::: {.page-shell}
+::: {.hero-scope aria-label="Escopo e fluxo do projeto"}
+<p class="scope-label">Escopo da base</p>
 
-::: {.stats-strip aria-label="Resumo da base de dados"}
-::: {.stat}
-<strong>10.466</strong>
-<span>registros na coleta bruta</span>
-:::
-::: {.stat}
-<strong>9.900</strong>
-<span>registros após a limpeza</span>
-:::
-::: {.stat}
-<strong>8.521</strong>
-<span>exibições com dados de filmes</span>
-:::
-::: {.stat}
-<strong>1974–2023</strong>
-<span>período presente nos arquivos</span>
-:::
+::: {.scope-fact}
+<span class="scope-value">1974–2023</span>
+<span class="scope-description">período presente nos arquivos</span>
 :::
 
-## Uma memória afetiva transformada em pergunta
-
-A motivação nasce de uma experiência pessoal registrada pelo projeto: a Sessão da Tarde fez parte da infância de seu autor e permaneceu associada ao contato com filmes, cultura e arte. A análise organiza essa curiosidade em perguntas verificáveis.
-
-::: {.question-grid}
-::: {.question-card}
-### Repetição
-
-Quais filmes foram exibidos mais vezes?
+::: {.scope-fact}
+<span class="scope-value">10.466</span>
+<span class="scope-description">registros na coleta bruta</span>
 :::
 
-::: {.question-card}
-### Elenco
-
-Quais atores aparecem com maior frequência nos créditos disponíveis?
+::: {.scope-fact}
+<span class="scope-value">8.521</span>
+<span class="scope-description">exibições enriquecidas</span>
 :::
 
-::: {.question-card}
-### Tempo e avaliação
-
-Como a distância entre lançamento e exibição se relaciona com as avaliações dos filmes?
+<ol class="scope-path" aria-label="Síntese do fluxo analítico">
+  <li>coleta</li>
+  <li>curadoria</li>
+  <li>análise</li>
+</ol>
 :::
-:::
+::::
 
-## Do registro à análise
+:::: {.home-chapter .question-chapter}
+::: {.chapter-heading}
+<p class="section-index">01 · Ponto de partida</p>
 
-O estudo tem uma sequência simples: coletar a grade, retirar ocorrências que não representam um filme e enriquecer os títulos antes de explorar padrões. Cada etapa abaixo é uma página de notebook estática, com código recolhível e resultados preservados.
-
-::: {.stage-grid}
-::: {.stage-card}
-<span class="stage-number">01</span>
-
-### [Construção da base](sessao_da_tarde/scraping.ipynb)
-
-Extração dos registros de exibição mantidos no TV Globo Wiki e organização em data, título e observações.
-
-[Ver a coleta →](sessao_da_tarde/scraping.ipynb){.card-link}
+## Uma lembrança pessoal vira pergunta de dados.
 :::
 
-::: {.stage-card}
-<span class="stage-number">02</span>
+::: {.chapter-copy}
+A Sessão da Tarde fez parte da infância do autor e permaneceu associada ao contato com filmes, cultura e arte. O projeto organiza essa curiosidade em perguntas que podem ser verificadas na programação registrada.
 
-### [Curadoria e limpeza](sessao_da_tarde/cleaning.ipynb)
+**Quais filmes voltam mais vezes? Quem aparece com maior frequência? Quanto tempo costuma separar o lançamento de uma exibição?** A publicação mantém essas perguntas próximas das decisões de coleta e limpeza que condicionam qualquer resposta.
+:::
+::::
 
-Remoção de datas sem filme, tratamento de títulos ausentes e normalização de exibições regionais.
+:::: {.context-section}
+::: {.context-inner}
+::: {.context-heading}
+<p class="section-index">02 · Do registro ao contexto</p>
 
-[Ver a limpeza →](sessao_da_tarde/cleaning.ipynb){.card-link}
+## Uma grade de televisão vira uma base analisável.
 :::
 
-::: {.stage-card .stage-card-featured}
-<span class="stage-number">03</span>
+::: {.context-copy}
+A fonte original é uma cronologia mantida no TV Globo Wiki. O projeto estrutura suas datas, títulos e observações; remove ocorrências que não representam um filme; e usa o The Movie Database para acrescentar lançamento, avaliação e elenco.
+:::
 
-### [Análise exploratória](sessao_da_tarde/Analysis.ipynb)
+::: {.context-visual}
+![](img/sessaodatarde.jpeg){.context-image fig-alt="Identidade visual da Sessão da Tarde"}
+:::
 
-Frequência de elenco, idade dos filmes na grade, avaliações e exploração de agrupamentos.
+::: {.context-roles}
+::: {.context-role}
+<span class="role-number">01</span>
 
-[Abrir a análise →](sessao_da_tarde/Analysis.ipynb){.card-link}
+### Registro de exibição
+
+Data, título e observações preservam o que a listagem informa sobre a grade.
+:::
+
+::: {.context-role}
+<span class="role-number">02</span>
+
+### Metadados de cinema
+
+Identificador, lançamento, avaliação e elenco tornam os títulos comparáveis.
 :::
 :::
 
-::: {.callout-note appearance="simple" icon=false}
-## Como ler os resultados
+<p class="context-link-wrap">[Conhecer os dados e suas limitações →](projeto.qmd){.context-link}</p>
 
-Esta é uma análise exploratória em andamento. Os dados de exibição vêm de uma fonte comunitária e o enriquecimento de filmes usa o The Movie Database. Questões planejadas sobre gênero, público-alvo e previsão de futuras exibições ainda não são apresentadas como conclusões.
+::: {.interpretation-note}
+<p class="note-label">Leitura responsável</p>
+
+Os números descrevem os arquivos deste repositório. A lista de exibições vem de uma fonte comunitária, o enriquecimento contém ausências e a avaliação do TMDB é um retrato do momento da coleta — não uma medida da recepção do filme na televisão.
+:::
+:::
+::::
+
+:::: {.journey-section}
+::: {.journey-inner}
+::: {.journey-heading}
+<p class="section-index">03 · Percurso analítico</p>
+
+## Da página pública aos padrões na programação.
 :::
 
-## Fontes, método e reprodutibilidade
-
-O repositório mantém os CSVs de cada estágio e os notebooks que documentam coleta, limpeza e análise. Isso permite distinguir o registro original, as decisões de curadoria e a base enriquecida usada nos gráficos.
-
-[Conhecer dados e limitações](projeto.qmd){.btn .btn-outline-primary} [Percorrer o estudo de caso](estudo.qmd){.btn .btn-primary}
-
+::: {.journey-intro}
+A leitura pública acompanha a ordem real do trabalho. Cada etapa abre um notebook preservado, com o código recolhido por padrão e seus resultados disponíveis.
 :::
+
+::: {.journey-list}
+::: {.journey-step}
+<span class="journey-number">01</span>
+
+### [Construir a base](sessao_da_tarde/scraping.ipynb)
+
+<span class="journey-description">Extrair datas, títulos e observações da listagem pública.</span>
+
+[Abrir coleta →](sessao_da_tarde/scraping.ipynb){.journey-action}
+:::
+
+::: {.journey-step}
+<span class="journey-number">02</span>
+
+### [Curar os registros](sessao_da_tarde/cleaning.ipynb)
+
+<span class="journey-description">Retirar dias sem filme e tratar exibições regionais.</span>
+
+[Abrir limpeza →](sessao_da_tarde/cleaning.ipynb){.journey-action}
+:::
+
+::: {.journey-step}
+<span class="journey-number">03</span>
+
+### [Explorar os padrões](sessao_da_tarde/Analysis.ipynb)
+
+<span class="journey-description">Comparar recorrência, elenco, idade dos filmes e avaliações.</span>
+
+[Abrir resultados →](sessao_da_tarde/Analysis.ipynb){.journey-action}
+:::
+:::
+
+[Ver o percurso completo do estudo de caso](estudo.qmd){.journey-overview}
+:::
+::::
+
+:::: {.provenance-section}
+::: {.provenance-heading}
+<p class="section-index">04 · Proveniência</p>
+
+## Fontes abertas, decisões visíveis.
+:::
+
+::: {.provenance-copy}
+A publicação mantém os CSVs de cada estágio e os notebooks que registram a coleta, a limpeza e a exploração. Assim, o visitante pode separar o dado recebido das escolhas feitas durante o tratamento.
+
+[Examinar fontes e dicionário de dados →](projeto.qmd)
+
+[Consultar código e arquivos no GitHub →](https://github.com/erlonL/SessaodaTarde)
+:::
+::::

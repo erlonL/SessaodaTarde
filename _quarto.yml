@@ -21,8 +21,6 @@ website:
   page-navigation: true
   back-to-top-navigation: true
   navbar:
-    background: "#123f68"
-    foreground: light
     pinned: true
     left:
       - href: index.qmd
