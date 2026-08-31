@@ -40,9 +40,9 @@ Execute os notebooks na ordem do estudo. A coleta depende da estrutura atual de 
 
 ## Publicação
 
-O workflow [`.github/workflows/publish.yml`](.github/workflows/publish.yml) renderiza o projeto e publica o resultado na branch `gh-pages` a cada push em `main` ou por acionamento manual.
+A branch `gh-pages` já está inicializada e o site está ativo em <https://erlonl.github.io/SessaodaTarde/>. O workflow [`.github/workflows/publish.yml`](.github/workflows/publish.yml) renderiza e atualiza essa branch a cada push em `main` ou por acionamento manual.
 
-Na primeira publicação, confirme em **Settings → Pages** que a fonte está configurada como **Deploy from a branch**, usando `gh-pages` e a pasta `/ (root)`. Em **Settings → Actions → General**, o workflow precisa de permissão de leitura e escrita para criar ou atualizar essa branch.
+O workflow usa somente o `GITHUB_TOKEN` fornecido pelo próprio GitHub Actions; nenhum segredo externo é necessário.
 
 ## Escopo atual
 
