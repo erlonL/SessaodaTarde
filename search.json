@@ -1,0 +1,226 @@
+[
+  {
+    "objectID": "sessao_da_tarde/scraping.html",
+    "href": "sessao_da_tarde/scraping.html",
+    "title": "1 · Construção da base",
+    "section": "",
+    "text": "Este notebook documenta a etapa de origem do projeto. A listagem mantida no TV Globo Wiki é lida como HTML e transformada em uma tabela com data, título e observações."
+  },
+  {
+    "objectID": "sessao_da_tarde/scraping.html#dependências",
+    "href": "sessao_da_tarde/scraping.html#dependências",
+    "title": "1 · Construção da base",
+    "section": "Dependências",
+    "text": "Dependências\n\n\nVer código\nimport re\nimport pandas as pd\nfrom bs4 import BeautifulSoup\nimport requests"
+  },
+  {
+    "objectID": "sessao_da_tarde/scraping.html#leitura-da-fonte",
+    "href": "sessao_da_tarde/scraping.html#leitura-da-fonte",
+    "title": "1 · Construção da base",
+    "section": "Leitura da fonte",
+    "text": "Leitura da fonte\nA coleta aponta para a página registrada no projeto. Como seletores e posições dependem da estrutura do HTML externo, uma mudança na página pode exigir revisão antes de uma nova execução.\n\n\nVer código\nurl = (\"https://tvglobo.fandom.com/pt-br/wiki/Lista_de_filmes_exibidos_na_Sess%C3%A3o_da_Tarde#2022\")\n\nhtml = requests.get(url).text\nsoup = BeautifulSoup(html, \"html.parser\") # parser - processa\n\n\n\n\nVer código\noutput = soup(\"div\", \"mw-parser-output\")\noutput = output[0]\n\n\nA célula seguinte funciona como uma conferência pontual da associação entre a lista, o mês e o ano encontrados no HTML.\n\n\nVer código\nanos = output.find_all('h2')\nmeses = output.find_all('h3')\nfilmes = output.find_all('ul')[51:]\nanos = anos[1:]\n#anos\n#meses\n#filmes\n#meses[0].findNextSibling('ul')"
+  },
+  {
+    "objectID": "sessao_da_tarde/scraping.html#estruturação-dos-registros",
+    "href": "sessao_da_tarde/scraping.html#estruturação-dos-registros",
+    "title": "1 · Construção da base",
+    "section": "Estruturação dos registros",
+    "text": "Estruturação dos registros\n\n\nVer código\nfilmes[6].findPreviousSibling('h3').findPreviousSibling('h2').text\n\n\n'2023'\n\n\n\n\nVer código\nlista_filmes = []\n\n\nPara cada item, o notebook separa a data, o título e eventuais comentários entre parênteses. O resultado é convertido em um DataFrame.\n\n\nVer código\nfor lista in filmes:\n    for filme in lista.find_all('li'):\n        ano = lista.findPreviousSibling('h2').text\n        # print(lista.findPreviousSibling('h3').text) # - mes\n        # print(filme.text)\n\n        data = filme.text[:5]\n        data = data.replace('/', '-')\n\n        data = f'{ano}-{data[-2:]}-{data[:-3]}' # 2000-12-31\n        titulo = filme.text[8:]\n\n        if '(' in titulo:\n            padrao = r\"\\((.*?)\\)\"\n\n            comment = re.search(padrao, titulo).group(1)\n            titulo = re.sub(padrao, \"\", titulo)\n        else:\n            comment = ''\n\n        filme_info = {\n            'date': data,\n            'title': titulo,\n            'comments': comment\n        }\n\n        lista_filmes.append(filme_info)\n\n\n\n\nVer código\ndf = pd.DataFrame(lista_filmes)\ndf.to_csv('datasets/whole_century.csv', index=False)\n\n\n\n\n\n\n\n\nA versão publicada usa os resultados e CSVs já versionados; ela não refaz a requisição durante o build do site. Isso evita que uma alteração temporária na fonte interrompa a publicação.\n\n\n\nContinuar para a curadoria e limpeza →"
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html",
+    "href": "sessao_da_tarde/Analysis.html",
+    "title": "3 · Análise exploratória",
+    "section": "",
+    "text": "Esta etapa investiga os padrões propostos no início do projeto. O recorte parte da base enriquecida e conserva apenas registros com título, data de lançamento e avaliação válidos; também exclui casos em que o lançamento aparece depois da exibição."
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html#preparação-do-recorte",
+    "href": "sessao_da_tarde/Analysis.html#preparação-do-recorte",
+    "title": "3 · Análise exploratória",
+    "section": "Preparação do recorte",
+    "text": "Preparação do recorte\n\n\nVer código\nimport ast\nfrom collections import Counter\n\nimport matplotlib.pyplot as plt\nimport pandas as pd\nimport seaborn as sns\nfrom sklearn.cluster import KMeans\nfrom sklearn.metrics import silhouette_score\nfrom sklearn.preprocessing import StandardScaler\n\nsns.set_theme(style=\"whitegrid\", context=\"notebook\", palette=\"colorblind\")\nplt.rcParams[\"figure.figsize\"] = (9, 5.2)\n\n\n\n\nVer código\ndf_raw = pd.read_csv(\"datasets/sdtcentury2.csv\")\n\ndf = df_raw.dropna(\n    subset=[\"title\", \"english_title\", \"release_date\", \"vote_average\"]\n).copy()\n\ndf[\"date\"] = pd.to_datetime(df[\"date\"], errors=\"coerce\")\ndf[\"release_date\"] = pd.to_datetime(df[\"release_date\"], errors=\"coerce\")\ndf[\"year\"] = df[\"date\"].dt.year\ndf[\"release_year\"] = df[\"release_date\"].dt.year\ndf[\"diff\"] = df[\"year\"] - df[\"release_year\"]\n\ninvalid_dates = df[\"date\"].isna() | df[\"release_date\"].isna()\nfuture_releases = df[\"diff\"] &lt; 0\ndf = df.loc[~invalid_dates & ~future_releases].copy()\n\npd.DataFrame(\n    {\n        \"etapa\": [\"Base enriquecida\", \"Recorte analítico\"],\n        \"registros\": [len(df_raw), len(df)],\n        \"títulos distintos\": [\n            df_raw[\"title\"].nunique(dropna=True),\n            df[\"title\"].nunique(dropna=True),\n        ],\n    }\n)\n\n\n\n\n\n\n\n\n\netapa\nregistros\ntítulos distintos\n\n\n\n\n0\nBase enriquecida\n8521\n3205\n\n\n1\nRecorte analítico\n7540\n2866\n\n\n\n\n\n\n\nO recorte evita tratar ausências e combinações cronologicamente impossíveis como observações válidas. Ele é usado nas seções seguintes, exceto quando a pergunta requer elenco, que tem sua própria filtragem.\n\n\nVer código\ndf[[\"date\", \"title\", \"release_date\", \"vote_average\", \"cast\"]].head()\n\n\n\n\n\n\n\n\n\ndate\ntitle\nrelease_date\nvote_average\ncast\n\n\n\n\n0\n2023-01-18\nOs Parças 2\n2019-11-14\n7.100\n['Tom Cavalcante', 'Whindersson Nunes', 'Tirul...\n\n\n1\n2023-03-14\nUma Amizade Inesperada\n2020-12-17\n6.977\n['Hong Chau', 'Lucas Jaye', 'Brian Dennehy']\n\n\n2\n2023-03-30\nMotoqueiros Selvagens\n1970-07-08\n5.000\n['Tom Baker', 'William Smith', 'Carl Steppling']\n\n\n3\n2023-02-21\nAté que a Sorte nos Separe\n2012-10-05\n6.400\n['Leandro Hassum', 'Danielle Winits', 'Kiko Ma...\n\n\n4\n2023-02-02\nArthur: O Milionário Irresistível\n2011-04-08\n5.601\n['Russell Brand', 'Helen Mirren', 'Greta Gerwig']"
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html#quais-filmes-mais-se-repetem",
+    "href": "sessao_da_tarde/Analysis.html#quais-filmes-mais-se-repetem",
+    "title": "3 · Análise exploratória",
+    "section": "Quais filmes mais se repetem?",
+    "text": "Quais filmes mais se repetem?\n\n\nVer código\ntop_titles = (\n    df[\"title\"]\n    .value_counts()\n    .head(10)\n    .rename_axis(\"filme\")\n    .reset_index(name=\"exibições\")\n)\ntop_titles\n\n\n\n\n\n\n\n\n\nfilme\nexibições\n\n\n\n\n0\nDe Volta À Lagoa Azul\n18\n\n\n1\nDe Repente 30\n18\n\n\n2\nA Família Buscapé\n15\n\n\n3\nCurtindo A Vida Adoidado\n14\n\n\n4\nMatilda\n14\n\n\n5\nUm Dia Especial\n14\n\n\n6\nO Paizão\n14\n\n\n7\nTáxi\n14\n\n\n8\nClick\n14\n\n\n9\nAs Aparências Enganam\n13\n\n\n\n\n\n\n\n\n\nVer código\nax = sns.barplot(\n    data=top_titles.sort_values(\"exibições\"),\n    x=\"exibições\",\n    y=\"filme\",\n    color=\"#176b95\",\n)\nax.set(\n    title=\"Títulos com mais registros de exibição\",\n    xlabel=\"Exibições no recorte\",\n    ylabel=None,\n)\nsns.despine()\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n“De Repente 30” e “De Volta à Lagoa Azul” ocupam o topo deste recorte, com 18 registros cada. A contagem mede ocorrências na base depois das validações descritas acima."
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html#quem-aparece-nos-elencos",
+    "href": "sessao_da_tarde/Analysis.html#quem-aparece-nos-elencos",
+    "title": "3 · Análise exploratória",
+    "section": "Quem aparece nos elencos?",
+    "text": "Quem aparece nos elencos?\n\n\nVer código\ncast_df = df.dropna(subset=[\"cast\"]).copy()\ncast_df[\"cast\"] = cast_df[\"cast\"].apply(ast.literal_eval)\n\nall_cast = Counter(name for cast in cast_df[\"cast\"] for name in cast)\nfirst_credit = Counter(cast[0] for cast in cast_df[\"cast\"] if cast)\n\nactor_summary = pd.DataFrame(\n    {\n        \"todos os créditos disponíveis\": dict(all_cast.most_common(10)),\n        \"primeiro crédito\": dict(first_credit.most_common(10)),\n    }\n).fillna(\"—\")\nactor_summary\n\n\n\n\n\n\n\n\n\ntodos os créditos disponíveis\nprimeiro crédito\n\n\n\n\nRenato Aragão\n135.0\n135.0\n\n\nEddie Murphy\n122.0\n73.0\n\n\nDedé Santana\n105.0\n—\n\n\nAdam Sandler\n88.0\n88.0\n\n\nWhoopi Goldberg\n82.0\n67.0\n\n\nJackie Chan\n78.0\n76.0\n\n\nMussum\n75.0\n—\n\n\nAnne Hathaway\n74.0\n—\n\n\nSteve Guttenberg\n72.0\n—\n\n\nTom Hanks\n66.0\n61.0\n\n\nMartin Lawrence\n—\n48.0\n\n\nArnold Schwarzenegger\n—\n48.0\n\n\nMichael J. Fox\n—\n48.0\n\n\nWill Smith\n—\n45.0\n\n\n\n\n\n\n\n\n\nVer código\ntop_first_credit = pd.DataFrame(\n    first_credit.most_common(10),\n    columns=[\"pessoa\", \"exibições\"],\n)\n\nax = sns.barplot(\n    data=top_first_credit.sort_values(\"exibições\"),\n    x=\"exibições\",\n    y=\"pessoa\",\n    color=\"#e9ad2f\",\n)\nax.set(\n    title=\"Pessoas mais recorrentes no primeiro crédito disponível\",\n    xlabel=\"Exibições no recorte\",\n    ylabel=None,\n)\nsns.despine()\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\nRenato Aragão aparece com maior frequência tanto na soma dos créditos armazenados quanto na primeira posição dessas listas. A leitura deve considerar que o CSV guarda apenas o elenco disponível no enriquecimento, e não necessariamente os créditos completos de cada filme."
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html#quanto-tempo-separa-lançamento-e-exibição",
+    "href": "sessao_da_tarde/Analysis.html#quanto-tempo-separa-lançamento-e-exibição",
+    "title": "3 · Análise exploratória",
+    "section": "Quanto tempo separa lançamento e exibição?",
+    "text": "Quanto tempo separa lançamento e exibição?\n\n\nVer código\ndf[\"diff\"].describe().rename(\n    {\n        \"count\": \"registros\",\n        \"mean\": \"média\",\n        \"std\": \"desvio padrão\",\n        \"min\": \"mínimo\",\n        \"25%\": \"25%\",\n        \"50%\": \"mediana\",\n        \"75%\": \"75%\",\n        \"max\": \"máximo\",\n    }\n)\n\n\nregistros        7540.000000\nmédia              11.562334\ndesvio padrão       9.641111\nmínimo              0.000000\n25%                 6.000000\nmediana             9.000000\n75%                14.000000\nmáximo             85.000000\nName: diff, dtype: float64\n\n\n\n\nVer código\nfig, axes = plt.subplots(1, 2, figsize=(11, 4.5))\n\nsns.histplot(data=df, x=\"diff\", bins=35, color=\"#176b95\", ax=axes[0])\naxes[0].set(\n    title=\"Intervalo entre lançamento e exibição\",\n    xlabel=\"Anos\",\n    ylabel=\"Registros\",\n)\n\nyearly_gap = df.groupby(\"year\", as_index=False)[\"diff\"].median()\nsns.lineplot(data=yearly_gap, x=\"year\", y=\"diff\", color=\"#123f68\", ax=axes[1])\naxes[1].set(\n    title=\"Mediana do intervalo por ano de exibição\",\n    xlabel=\"Ano da exibição\",\n    ylabel=\"Mediana em anos\",\n)\n\nsns.despine()\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\nA mediana do recorte é de 9 anos entre lançamento e exibição. A distribuição é assimétrica e chega a intervalos muito maiores; por isso a mediana anual é mais legível do que uma média isolada."
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html#avaliações-e-idade-do-filme",
+    "href": "sessao_da_tarde/Analysis.html#avaliações-e-idade-do-filme",
+    "title": "3 · Análise exploratória",
+    "section": "Avaliações e idade do filme",
+    "text": "Avaliações e idade do filme\n\n\nVer código\ngap_labels = [\"0–5\", \"6–10\", \"11–25\", \"26–50\", \"51–100\"]\ndf[\"gap_group\"] = pd.cut(\n    df[\"diff\"],\n    bins=[-1, 5, 10, 25, 50, 100],\n    labels=gap_labels,\n)\n\ngap_summary = (\n    df.groupby(\"gap_group\", observed=True)[\"vote_average\"]\n    .agg(registros=\"count\", média=\"mean\", mediana=\"median\", mínimo=\"min\", máximo=\"max\")\n    .round(2)\n)\ngap_summary\n\n\n\n\n\n\n\n\n\nregistros\nmédia\nmediana\nmínimo\nmáximo\n\n\ngap_group\n\n\n\n\n\n\n\n\n\n0–5\n1863\n5.82\n6.06\n0.0\n10.00\n\n\n6–10\n2593\n6.00\n6.10\n0.0\n10.00\n\n\n11–25\n2456\n6.15\n6.27\n0.0\n10.00\n\n\n26–50\n546\n6.13\n6.40\n0.0\n8.36\n\n\n51–100\n82\n4.38\n6.50\n0.0\n7.60\n\n\n\n\n\n\n\n\n\nVer código\nfig, axes = plt.subplots(1, 2, figsize=(12, 4.8))\n\nsns.histplot(data=df, x=\"vote_average\", bins=30, color=\"#176b95\", ax=axes[0])\naxes[0].set(\n    title=\"Distribuição das avaliações\",\n    xlabel=\"Avaliação média no TMDB\",\n    ylabel=\"Registros\",\n)\n\nsns.boxplot(\n    data=df,\n    x=\"gap_group\",\n    y=\"vote_average\",\n    color=\"#dceef6\",\n    showfliers=False,\n    ax=axes[1],\n)\naxes[1].set(\n    title=\"Avaliação por intervalo até a exibição\",\n    xlabel=\"Anos entre lançamento e exibição\",\n    ylabel=\"Avaliação média no TMDB\",\n)\n\nsns.despine()\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\nVer código\ncorrelations = df[[\"diff\", \"year\", \"release_year\", \"vote_average\"]].corr()\n\nax = sns.heatmap(\n    correlations,\n    annot=True,\n    fmt=\".2f\",\n    cmap=\"vlag\",\n    center=0,\n    square=True,\n)\nax.set_title(\"Correlação entre variáveis numéricas\")\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\nAs faixas permitem comparar distribuições sem sugerir causalidade. A avaliação vem de uma fonte externa e não mede a recepção específica da exibição na televisão; a correlação apenas resume associação linear dentro deste recorte."
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html#uma-exploração-de-agrupamentos",
+    "href": "sessao_da_tarde/Analysis.html#uma-exploração-de-agrupamentos",
+    "title": "3 · Análise exploratória",
+    "section": "Uma exploração de agrupamentos",
+    "text": "Uma exploração de agrupamentos\nO notebook original testava k-means com idade e avaliação. Aqui as variáveis são padronizadas antes do ajuste, para que a escala em anos não domine a escala de avaliação. O exercício é descritivo: não prevê futuras exibições e não define categorias naturais de filmes.\n\n\nVer código\ncluster_data = df[[\"diff\", \"vote_average\"]].dropna()\nscaled = StandardScaler().fit_transform(cluster_data)\n\ncluster_diagnostics = []\nfor k in range(2, 7):\n    model = KMeans(n_clusters=k, n_init=\"auto\", random_state=42)\n    labels = model.fit_predict(scaled)\n    cluster_diagnostics.append(\n        {\n            \"grupos\": k,\n            \"inércia\": model.inertia_,\n            \"silhouette\": silhouette_score(scaled, labels),\n        }\n    )\n\ncluster_diagnostics = pd.DataFrame(cluster_diagnostics)\ncluster_diagnostics.round(3)\n\n\n\n\n\n\n\n\n\ngrupos\ninércia\nsilhouette\n\n\n\n\n0\n2\n10938.466\n0.666\n\n\n1\n3\n6746.482\n0.549\n\n\n2\n4\n4938.138\n0.366\n\n\n3\n5\n4280.751\n0.320\n\n\n4\n6\n3492.788\n0.341\n\n\n\n\n\n\n\n\n\nVer código\nfig, axes = plt.subplots(1, 2, figsize=(11, 4.4))\n\nsns.lineplot(\n    data=cluster_diagnostics,\n    x=\"grupos\",\n    y=\"inércia\",\n    marker=\"o\",\n    color=\"#176b95\",\n    ax=axes[0],\n)\naxes[0].set(title=\"Inércia por número de grupos\", xlabel=\"Grupos\", ylabel=\"Inércia\")\n\nsns.lineplot(\n    data=cluster_diagnostics,\n    x=\"grupos\",\n    y=\"silhouette\",\n    marker=\"o\",\n    color=\"#e9ad2f\",\n    ax=axes[1],\n)\naxes[1].set(\n    title=\"Separação média dos grupos\",\n    xlabel=\"Grupos\",\n    ylabel=\"Silhouette\",\n)\n\nsns.despine()\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\nVer código\nfinal_model = KMeans(n_clusters=2, n_init=\"auto\", random_state=42)\ncluster_plot = cluster_data.assign(grupo=final_model.fit_predict(scaled).astype(str))\n\nax = sns.scatterplot(\n    data=cluster_plot,\n    x=\"diff\",\n    y=\"vote_average\",\n    hue=\"grupo\",\n    alpha=0.55,\n    s=32,\n)\nax.set(\n    title=\"Agrupamento exploratório: intervalo e avaliação\",\n    xlabel=\"Anos entre lançamento e exibição\",\n    ylabel=\"Avaliação média no TMDB\",\n)\nax.legend(title=\"Grupo\")\nsns.despine()\nplt.tight_layout()\nplt.show()"
+  },
+  {
+    "objectID": "sessao_da_tarde/Analysis.html#o-que-esta-etapa-sustenta",
+    "href": "sessao_da_tarde/Analysis.html#o-que-esta-etapa-sustenta",
+    "title": "3 · Análise exploratória",
+    "section": "O que esta etapa sustenta",
+    "text": "O que esta etapa sustenta\n\nHá títulos claramente recorrentes no recorte; os dois primeiros têm 18 registros cada.\nRenato Aragão é a pessoa mais recorrente na primeira posição do elenco disponível, com 135 ocorrências.\nO intervalo mediano entre lançamento e exibição é de 9 anos, mas há uma cauda longa de filmes bem mais antigos.\nAs comparações de avaliação são descritivas. Elas não demonstram que a idade do filme causa avaliações maiores ou menores.\nO agrupamento é uma exploração de estrutura, não uma previsão nem uma classificação editorial do programa.\n\n\n\n\n\n\n\nQuestões sobre gênero, público-alvo e previsão de futuras exibições permanecem como trabalho futuro no escopo original do projeto.\n\n\n\nVoltar à visão geral do estudo Ver dados e limitações"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Sessão da Tarde, vista pelos dados",
+    "section": "",
+    "text": "ESTUDO DE DADOS · TELEVISÃO E CINEMA\n\n\n\nUma investigação sobre os filmes exibidos no programa: quais títulos voltam à grade, quem aparece com mais frequência e quanto tempo separa o lançamento de uma exibição.\nO projeto transforma registros públicos em uma base estruturada, documenta sua curadoria e abre uma análise exploratória reproduzível.\nComeçar pela análise Entender o projeto"
+  },
+  {
+    "objectID": "index.html#uma-memória-afetiva-transformada-em-pergunta",
+    "href": "index.html#uma-memória-afetiva-transformada-em-pergunta",
+    "title": "Sessão da Tarde, vista pelos dados",
+    "section": "Uma memória afetiva transformada em pergunta",
+    "text": "Uma memória afetiva transformada em pergunta\nA motivação nasce de uma experiência pessoal registrada pelo projeto: a Sessão da Tarde fez parte da infância de seu autor e permaneceu associada ao contato com filmes, cultura e arte. A análise organiza essa curiosidade em perguntas verificáveis.\n\n\nRepetição\nQuais filmes foram exibidos mais vezes?\n\n\nElenco\nQuais atores aparecem com maior frequência nos créditos disponíveis?\n\n\nTempo e avaliação\nComo a distância entre lançamento e exibição se relaciona com as avaliações dos filmes?"
+  },
+  {
+    "objectID": "index.html#do-registro-à-análise",
+    "href": "index.html#do-registro-à-análise",
+    "title": "Sessão da Tarde, vista pelos dados",
+    "section": "Do registro à análise",
+    "text": "Do registro à análise\nO estudo tem uma sequência simples: coletar a grade, retirar ocorrências que não representam um filme e enriquecer os títulos antes de explorar padrões. Cada etapa abaixo é uma página de notebook estática, com código recolhível e resultados preservados.\n\n\n01\n\nConstrução da base\nExtração dos registros de exibição mantidos no TV Globo Wiki e organização em data, título e observações.\nVer a coleta →\n\n\n\n02\n\nCuradoria e limpeza\nRemoção de datas sem filme, tratamento de títulos ausentes e normalização de exibições regionais.\nVer a limpeza →\n\n\n\n03\n\nAnálise exploratória\nFrequência de elenco, idade dos filmes na grade, avaliações e exploração de agrupamentos.\nAbrir a análise →\n\n\n\n\n\n\n\n\n\nNotaComo ler os resultados\n\n\n\nEsta é uma análise exploratória em andamento. Os dados de exibição vêm de uma fonte comunitária e o enriquecimento de filmes usa o The Movie Database. Questões planejadas sobre gênero, público-alvo e previsão de futuras exibições ainda não são apresentadas como conclusões."
+  },
+  {
+    "objectID": "index.html#fontes-método-e-reprodutibilidade",
+    "href": "index.html#fontes-método-e-reprodutibilidade",
+    "title": "Sessão da Tarde, vista pelos dados",
+    "section": "Fontes, método e reprodutibilidade",
+    "text": "Fontes, método e reprodutibilidade\nO repositório mantém os CSVs de cada estágio e os notebooks que documentam coleta, limpeza e análise. Isso permite distinguir o registro original, as decisões de curadoria e a base enriquecida usada nos gráficos.\nConhecer dados e limitações Percorrer o estudo de caso"
+  },
+  {
+    "objectID": "estudo.html",
+    "href": "estudo.html",
+    "title": "Estudo de caso",
+    "section": "",
+    "text": "O projeto é apresentado em três etapas. A ordem importa: a análise final depende de uma listagem coletada, de regras de limpeza e do enriquecimento com metadados de filmes."
+  },
+  {
+    "objectID": "estudo.html#construção-da-base",
+    "href": "estudo.html#construção-da-base",
+    "title": "Estudo de caso",
+    "section": "Construção da base",
+    "text": "Construção da base\nO primeiro notebook transforma a listagem do TV Globo Wiki em uma tabela de datas, títulos e observações. Ele documenta a lógica original de extração e gera whole_century.csv.\nEntrada: página HTML externa Saída: 10.466 registros brutos\nLer esta etapa"
+  },
+  {
+    "objectID": "estudo.html#limpeza-dos-registros",
+    "href": "estudo.html#limpeza-dos-registros",
+    "title": "Estudo de caso",
+    "section": "Limpeza dos registros",
+    "text": "Limpeza dos registros\nO segundo notebook exclui linhas sem título e dias identificados como sem exibição. Quando a fonte registra filmes diferentes para regiões distintas na mesma linha, mantém o primeiro título.\nEntrada: whole_century.csv Saída: 9.900 registros limpos\nLer esta etapa"
+  },
+  {
+    "objectID": "estudo.html#padrões-na-programação",
+    "href": "estudo.html#padrões-na-programação",
+    "title": "Estudo de caso",
+    "section": "Padrões na programação",
+    "text": "Padrões na programação\nO notebook final usa a base enriquecida para explorar recorrência de elenco, anos de lançamento, avaliações e o intervalo entre lançamento e exibição. Também testa agrupamentos como ferramenta exploratória.\nEntrada: sdtcentury2.csv Recorte analítico: registros com datas válidas e sem lançamento posterior à exibição\nAbrir a análise"
+  },
+  {
+    "objectID": "projeto.html",
+    "href": "projeto.html",
+    "title": "Projeto e dados",
+    "section": "",
+    "text": "Este projeto investiga os filmes exibidos na Sessão da Tarde, da Globo. A motivação descrita no repositório é pessoal: o programa fez parte da infância do autor, apresentou filmes ligados a diferentes aspectos da cultura e da arte e permaneceu como uma experiência reconhecível de assistir a filmes em família durante a tarde.\nEssa memória se converte em três perguntas iniciais:\n\nQual filme mais se repetiu na exibição?\nQuantas vezes determinados atores apareceram?\nHistoricamente, quais foram os filmes mais e menos bem avaliados entre os exibidos?"
+  },
+  {
+    "objectID": "projeto.html#o-ponto-de-partida",
+    "href": "projeto.html#o-ponto-de-partida",
+    "title": "Projeto e dados",
+    "section": "",
+    "text": "Este projeto investiga os filmes exibidos na Sessão da Tarde, da Globo. A motivação descrita no repositório é pessoal: o programa fez parte da infância do autor, apresentou filmes ligados a diferentes aspectos da cultura e da arte e permaneceu como uma experiência reconhecível de assistir a filmes em família durante a tarde.\nEssa memória se converte em três perguntas iniciais:\n\nQual filme mais se repetiu na exibição?\nQuantas vezes determinados atores apareceram?\nHistoricamente, quais foram os filmes mais e menos bem avaliados entre os exibidos?"
+  },
+  {
+    "objectID": "projeto.html#por-que-estruturar-esses-registros",
+    "href": "projeto.html#por-que-estruturar-esses-registros",
+    "title": "Projeto e dados",
+    "section": "Por que estruturar esses registros",
+    "text": "Por que estruturar esses registros\nUma lista cronológica responde o que passou em cada data. Uma base estruturada permite fazer perguntas diferentes: contar recorrências, relacionar títulos às pessoas em seus elencos e comparar o ano de lançamento com o ano de exibição. O valor analítico do conjunto está justamente nessa passagem de uma cronologia legível por pessoas para registros comparáveis por código."
+  },
+  {
+    "objectID": "projeto.html#linhagem-dos-dados",
+    "href": "projeto.html#linhagem-dos-dados",
+    "title": "Projeto e dados",
+    "section": "Linhagem dos dados",
+    "text": "Linhagem dos dados\n\n\n\n\n\n\n\n\n\nEstágio\nArquivo principal\nRegistros\nPapel no projeto\n\n\n\n\nColeta bruta\nwhole_century.csv\n10.466\nDatas, títulos e observações extraídos da fonte\n\n\nBase limpa\ncleanedcentury.csv\n9.900\nRemove títulos ausentes e dias sem exibição; normaliza casos regionais\n\n\nBase enriquecida\nsdtcentury2.csv\n8.521\nAcrescenta identificador, título original, lançamento, avaliação e elenco\n\n\n\nOs arquivos preservam estágios intermediários adicionais para o recorte dos anos 2000 e para o processo de enriquecimento. Eles continuam no repositório para manter a rastreabilidade do trabalho existente.\n\nDicionário da base enriquecida\n\n\n\nCampo\nConteúdo\n\n\n\n\ndate\nData registrada para a exibição\n\n\ntitle\nTítulo usado na listagem em português\n\n\ncomments\nObservação disponível na fonte\n\n\nid\nIdentificador usado no enriquecimento pelo TMDB\n\n\nenglish_title\nTítulo retornado durante o enriquecimento\n\n\nrelease_date\nData de lançamento associada ao filme\n\n\nvote_average\nAvaliação média disponível no TMDB na coleta\n\n\ncast\nLista de nomes de elenco armazenada no arquivo"
+  },
+  {
+    "objectID": "projeto.html#fontes",
+    "href": "projeto.html#fontes",
+    "title": "Projeto e dados",
+    "section": "Fontes",
+    "text": "Fontes\n\nExibições: Lista de filmes exibidos na Sessão da Tarde, no TV Globo Wiki.\nMetadados dos filmes: The Movie Database (TMDB)."
+  },
+  {
+    "objectID": "projeto.html#limites-que-orientam-a-leitura",
+    "href": "projeto.html#limites-que-orientam-a-leitura",
+    "title": "Projeto e dados",
+    "section": "Limites que orientam a leitura",
+    "text": "Limites que orientam a leitura\n\n\n\n\n\n\nOs registros de exibição dependem de uma wiki mantida por usuários. A base enriquecida também contém correspondências ausentes e datas de lançamento que precisam ser validadas antes do cálculo. Portanto, os números descrevem os arquivos deste projeto, não uma lista oficial ou necessariamente completa da programação.\n\n\n\n\nO arquivo bruto vai de 1974 a 2023, conforme as datas presentes no repositório.\nA limpeza escolhe o primeiro título em linhas com múltiplas exibições regionais; isso é uma decisão metodológica explícita.\nNem todo título limpo recebeu metadados de filme no enriquecimento.\nA análise remove lançamentos ausentes e datas em que o lançamento aparece depois da exibição.\nGênero, público-alvo e previsão de futuras exibições aparecem como trabalho planejado no README, não como resultados concluídos."
+  },
+  {
+    "objectID": "projeto.html#reproduzir-e-continuar",
+    "href": "projeto.html#reproduzir-e-continuar",
+    "title": "Projeto e dados",
+    "section": "Reproduzir e continuar",
+    "text": "Reproduzir e continuar\nO site publica os outputs já registrados nos notebooks e não executa scraping durante a implantação. Essa escolha mantém a publicação estável e evita depender da estrutura atual de uma página externa a cada build.\nPara refazer a análise localmente, instale as dependências de requirements.txt, execute os notebooks na ordem apresentada no estudo de caso e renderize o projeto com Quarto. Os comandos completos estão no README do repositório.\nSeguir para o estudo de caso"
+  },
+  {
+    "objectID": "sessao_da_tarde/cleaning.html",
+    "href": "sessao_da_tarde/cleaning.html",
+    "title": "2 · Curadoria e limpeza",
+    "section": "",
+    "text": "A listagem bruta inclui datas sem filme, títulos ausentes e linhas com exibições diferentes por região. Aqui essas situações são identificadas e tratadas de forma explícita."
+  },
+  {
+    "objectID": "sessao_da_tarde/cleaning.html#importação-dos-dados",
+    "href": "sessao_da_tarde/cleaning.html#importação-dos-dados",
+    "title": "2 · Curadoria e limpeza",
+    "section": "Importação dos dados",
+    "text": "Importação dos dados\n\n\nVer código\nimport pandas as pd\nimport numpy as np\nimport re\n\n\n\n\nVer código\ndf = pd.read_csv('datasets/whole_century.csv')\ndf.head(3)\n\n\n\n\n\n\n\n\n\ndate\ntitle\ncomments\n\n\n\n\n0\n2023-01-02\nNão Houve Exibição\nvelório de Pelé, intitulada Rei Pelé: Cobertura\n\n\n1\n2023-01-03\nA Nova Cinderela\nexibição às 15h55\n\n\n2\n2023-01-04\nAgente 86\n2008"
+  },
+  {
+    "objectID": "sessao_da_tarde/cleaning.html#registros-sem-filme",
+    "href": "sessao_da_tarde/cleaning.html#registros-sem-filme",
+    "title": "2 · Curadoria e limpeza",
+    "section": "Registros sem filme",
+    "text": "Registros sem filme\n\n\nVer código\ndf_example = df.dropna(subset='title')\ndf_example[df_example['title'].str.contains('Não Houve', regex= False, case= False)].head(3)\n\n\n\n\n\n\n\n\n\ndate\ntitle\ncomments\n\n\n\n\n0\n2023-01-02\nNão Houve Exibição\nvelório de Pelé, intitulada Rei Pelé: Cobertura\n\n\n26\n2023-02-07\nNão Houve Exibição - Mundial de Clubes: Flamen...\nNaN\n\n\n28\n2023-02-09\nNão Houve Exibição - Supercopa Feminina de Fut...\nNaN\n\n\n\n\n\n\n\nA inspeção mostra dois casos que não representam uma exibição analisável:\n\ndias descritos como “Não Houve Exibição”;\nlinhas sem informação de título.\n\nEsses registros são retirados da base limpa.\n\n\nVer código\ndf.dropna(subset=['title'], inplace=True)\n\n\n\n\nVer código\nrows_to_delete = df.loc[df['title'].str.contains('Não Houve', case=False, regex=False)].index\n\n\n\n\nVer código\ndf.drop(rows_to_delete, inplace=True)"
+  },
+  {
+    "objectID": "sessao_da_tarde/cleaning.html#exibições-regionais",
+    "href": "sessao_da_tarde/cleaning.html#exibições-regionais",
+    "title": "2 · Curadoria e limpeza",
+    "section": "Exibições regionais",
+    "text": "Exibições regionais\nQuando uma linha reúne mais de um título, separados por |, o processo original mantém o primeiro. Essa regra simplifica a unidade de análise, mas também é uma limitação: variações regionais posteriores ao primeiro título deixam de aparecer.\n\n\nVer código\ndf[df['title'].str.contains('|', case=False, regex=False)].head(3)\n\n\n\n\n\n\n\n\n\ndate\ntitle\ncomments\n\n\n\n\n482\n2021-04-12\nIntocáveis | Meu Pai, Meu Herói\nsomente para o ES\n\n\n750\n2020-04-20\nHomem-Aranha | Tainá 2: A Aventura Continua\n2002\n\n\n958\n2019-02-04\nSoul Surfer: Coragem de Viver | Kung Fu Panda 2\nsomente para as afiliadas da Globo\n\n\n\n\n\n\n\n\n\nVer código\ndf['title'] = df['title'].str.split('|').str[0].str.strip()"
+  },
+  {
+    "objectID": "sessao_da_tarde/cleaning.html#exportação",
+    "href": "sessao_da_tarde/cleaning.html#exportação",
+    "title": "2 · Curadoria e limpeza",
+    "section": "Exportação",
+    "text": "Exportação\n\n\nVer código\ndf.to_csv('datasets/cleanedcentury.csv', index = False)\n\n\nA base limpa conserva data, título e observações. O enriquecimento posterior — já preservado nos CSVs do repositório — acrescenta identificador, título original, lançamento, avaliação e elenco.\nContinuar para a análise exploratória →"
+  }
+]
