@@ -7,47 +7,49 @@ code-tools: false
 image: img/sessaodatarde.jpeg
 ---
 
-:::: {.home-hero}
-::: {.hero-lead}
-<p class="eyebrow">Televisão · Cinema · Ciência de dados</p>
-
-# O que décadas de filmes revelam sobre a Sessão da Tarde?
+:::: {.hero}
+::: {.grid}
+::: {.g-col-12 .g-col-lg-7 .hero-copy}
+::: {.eyebrow}
+ESTUDO DE DADOS · TELEVISÃO E CINEMA
 :::
 
-::: {.hero-brief}
-Uma memória afetiva também pode ser investigada. Este projeto transforma registros de exibição em uma base estruturada para observar títulos recorrentes, presenças no elenco e o tempo entre lançamento e exibição.
+# Sessão da Tarde, vista pelos dados
 
-::: {.hero-actions}
-[Percorrer a análise](sessao_da_tarde/Analysis.ipynb){.btn .btn-primary .btn-lg}
-[Entender o projeto](projeto.qmd){.hero-text-link}
-:::
-:::
+Uma investigação sobre os filmes exibidos no programa: quais títulos voltam à grade, quem aparece com mais frequência e quanto tempo separa o lançamento de uma exibição.
 
-::: {.hero-scope aria-label="Escopo e fluxo do projeto"}
-<p class="scope-label">Escopo da base</p>
+O projeto transforma registros públicos em uma base estruturada, documenta sua curadoria e abre uma análise exploratória reproduzível.
 
-::: {.scope-fact}
-<span class="scope-value">1974–2023</span>
-<span class="scope-description">período presente nos arquivos</span>
+[Percorrer a análise](sessao_da_tarde/Analysis.ipynb){.btn .btn-primary .btn-lg} [Entender o projeto](projeto.qmd){.btn .btn-outline-primary .btn-lg}
 :::
 
-::: {.scope-fact}
-<span class="scope-value">10.466</span>
-<span class="scope-description">registros na coleta bruta</span>
+::: {.g-col-12 .g-col-lg-5}
+![](img/sessaodatarde.jpeg){.hero-image fig-alt="Identidade visual da Sessão da Tarde"}
 :::
-
-::: {.scope-fact}
-<span class="scope-value">8.521</span>
-<span class="scope-description">exibições enriquecidas</span>
-:::
-
-<ol class="scope-path" aria-label="Síntese do fluxo analítico">
-  <li>coleta</li>
-  <li>curadoria</li>
-  <li>análise</li>
-</ol>
 :::
 ::::
+
+::: {.home-scope-shell}
+:::: {.stats-strip aria-label="Resumo da base de dados"}
+::: {.stat}
+<strong>10.466</strong>
+<span>registros na coleta bruta</span>
+:::
+::: {.stat}
+<strong>9.900</strong>
+<span>registros após a limpeza</span>
+:::
+::: {.stat}
+<strong>8.521</strong>
+<span>exibições com dados de filmes</span>
+:::
+::: {.stat}
+<strong>1974–2023</strong>
+<span>período presente nos arquivos</span>
+:::
+::::
+:::
+
 
 :::: {.home-chapter .question-chapter}
 ::: {.chapter-heading}
