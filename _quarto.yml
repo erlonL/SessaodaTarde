@@ -1,0 +1,68 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "sessao_da_tarde/*.ipynb"
+
+lang: pt-BR
+
+website:
+  title: "Sessão da Tarde"
+  description: "Um estudo de dados sobre os filmes exibidos na Sessão da Tarde."
+  site-url: "https://erlonl.github.io/SessaodaTarde/"
+  repo-url: "https://github.com/erlonL/SessaodaTarde"
+  repo-actions: [source, issue]
+  open-graph: true
+  twitter-card: true
+  search:
+    location: navbar
+    type: overlay
+  page-navigation: true
+  back-to-top-navigation: true
+  navbar:
+    background: "#123f68"
+    foreground: light
+    pinned: true
+    left:
+      - href: index.qmd
+        text: Início
+      - href: projeto.qmd
+        text: Projeto
+      - text: Estudo de caso
+        menu:
+          - href: estudo.qmd
+            text: Visão geral
+          - href: sessao_da_tarde/scraping.ipynb
+            text: "1 · Construção da base"
+          - href: sessao_da_tarde/cleaning.ipynb
+            text: "2 · Curadoria e limpeza"
+          - href: sessao_da_tarde/Analysis.ipynb
+            text: "3 · Análise exploratória"
+    right:
+      - icon: github
+        href: "https://github.com/erlonL/SessaodaTarde"
+        aria-label: Repositório no GitHub
+  page-footer:
+    left: "Sessão da Tarde · estudo de dados"
+    right:
+      - text: Dados e código
+        href: "https://github.com/erlonL/SessaodaTarde"
+
+execute:
+  enabled: false
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-title: Nesta página
+    toc-depth: 3
+    code-fold: true
+    code-summary: Ver código
+    code-copy: true
+    code-overflow: wrap
+    anchor-sections: true
+    smooth-scroll: true
+    link-external-newwindow: true

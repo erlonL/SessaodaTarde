@@ -1,0 +1,68 @@
+---
+title: "Projeto e dados"
+subtitle: "Motivação, escopo, fontes e limites da investigação"
+description: "Contexto e documentação da base usada no estudo sobre a Sessão da Tarde."
+page-layout: article
+---
+
+## O ponto de partida
+
+Este projeto investiga os filmes exibidos na **Sessão da Tarde**, da Globo. A motivação descrita no repositório é pessoal: o programa fez parte da infância do autor, apresentou filmes ligados a diferentes aspectos da cultura e da arte e permaneceu como uma experiência reconhecível de assistir a filmes em família durante a tarde.
+
+Essa memória se converte em três perguntas iniciais:
+
+1. Qual filme mais se repetiu na exibição?
+2. Quantas vezes determinados atores apareceram?
+3. Historicamente, quais foram os filmes mais e menos bem avaliados entre os exibidos?
+
+## Por que estruturar esses registros
+
+Uma lista cronológica responde *o que passou em cada data*. Uma base estruturada permite fazer perguntas diferentes: contar recorrências, relacionar títulos às pessoas em seus elencos e comparar o ano de lançamento com o ano de exibição. O valor analítico do conjunto está justamente nessa passagem de uma cronologia legível por pessoas para registros comparáveis por código.
+
+## Linhagem dos dados
+
+| Estágio | Arquivo principal | Registros | Papel no projeto |
+|---|---|---:|---|
+| Coleta bruta | `whole_century.csv` | 10.466 | Datas, títulos e observações extraídos da fonte |
+| Base limpa | `cleanedcentury.csv` | 9.900 | Remove títulos ausentes e dias sem exibição; normaliza casos regionais |
+| Base enriquecida | `sdtcentury2.csv` | 8.521 | Acrescenta identificador, título original, lançamento, avaliação e elenco |
+
+Os arquivos preservam estágios intermediários adicionais para o recorte dos anos 2000 e para o processo de enriquecimento. Eles continuam no repositório para manter a rastreabilidade do trabalho existente.
+
+### Dicionário da base enriquecida
+
+| Campo | Conteúdo |
+|---|---|
+| `date` | Data registrada para a exibição |
+| `title` | Título usado na listagem em português |
+| `comments` | Observação disponível na fonte |
+| `id` | Identificador usado no enriquecimento pelo TMDB |
+| `english_title` | Título retornado durante o enriquecimento |
+| `release_date` | Data de lançamento associada ao filme |
+| `vote_average` | Avaliação média disponível no TMDB na coleta |
+| `cast` | Lista de nomes de elenco armazenada no arquivo |
+
+## Fontes
+
+- **Exibições:** [Lista de filmes exibidos na Sessão da Tarde, no TV Globo Wiki](https://tvglobo.fandom.com/pt-br/wiki/Lista_de_filmes_exibidos_na_Sess%C3%A3o_da_Tarde).
+- **Metadados dos filmes:** [The Movie Database (TMDB)](https://www.themoviedb.org/).
+
+## Limites que orientam a leitura
+
+::: {.callout-important appearance="simple"}
+Os registros de exibição dependem de uma wiki mantida por usuários. A base enriquecida também contém correspondências ausentes e datas de lançamento que precisam ser validadas antes do cálculo. Portanto, os números descrevem **os arquivos deste projeto**, não uma lista oficial ou necessariamente completa da programação.
+:::
+
+- O arquivo bruto vai de 1974 a 2023, conforme as datas presentes no repositório.
+- A limpeza escolhe o primeiro título em linhas com múltiplas exibições regionais; isso é uma decisão metodológica explícita.
+- Nem todo título limpo recebeu metadados de filme no enriquecimento.
+- A análise remove lançamentos ausentes e datas em que o lançamento aparece depois da exibição.
+- Gênero, público-alvo e previsão de futuras exibições aparecem como trabalho planejado no README, não como resultados concluídos.
+
+## Reproduzir e continuar
+
+O site publica os outputs já registrados nos notebooks e não executa scraping durante a implantação. Essa escolha mantém a publicação estável e evita depender da estrutura atual de uma página externa a cada build.
+
+Para refazer a análise localmente, instale as dependências de `requirements.txt`, execute os notebooks na ordem apresentada no [estudo de caso](estudo.qmd) e renderize o projeto com Quarto. Os comandos completos estão no [README do repositório](https://github.com/erlonL/SessaodaTarde#desenvolvimento-local).
+
+[Seguir para o estudo de caso](estudo.qmd){.btn .btn-primary}

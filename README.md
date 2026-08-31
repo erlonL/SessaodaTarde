@@ -1,47 +1,49 @@
 # Sessão da Tarde
 
-Projeto de análise de dados com base nos filmes passados na Sessão da Tarde (Globo)
+Estudo de dados sobre os filmes exibidos na **Sessão da Tarde**, da Globo. O projeto documenta a coleta, a limpeza e a análise exploratória de registros de exibição, enriquecidos com metadados do [The Movie Database](https://www.themoviedb.org/).
 
-<img src="img/sessaodatarde.jpeg" alt="Capa">
+O conteúdo é publicado como um site Quarto: <https://erlonl.github.io/SessaodaTarde/>
 
-## Motivação
+## Percurso do estudo
 
-Sessão da Tarde fez parte da minha infância e até hoje é um dos meus programas preferidos por sempre ter filmes clássicos, o que me apresentou a diversos aspectos da cultura e da arte. Também é algo que eu acredito estar enraizado no brasileiro, hoje em dia quem não sabe o que é Sessão da Tarde? Ou a sensação de ligar sua TV à tarde e estar passando um filme que toda a família possa assistir? Por isso me surgiu a vontade de fazer uma análise de dados utilizando esses filmes e explorar os diferentes aspectos desse programa.
+1. [`scraping.ipynb`](sessao_da_tarde/scraping.ipynb) — coleta a listagem do [TV Globo Wiki](https://tvglobo.fandom.com/pt-br/wiki/Lista_de_filmes_exibidos_na_Sess%C3%A3o_da_Tarde).
+2. [`cleaning.ipynb`](sessao_da_tarde/cleaning.ipynb) — remove registros sem filme e normaliza títulos.
+3. [`Analysis.ipynb`](sessao_da_tarde/Analysis.ipynb) — explora recorrências, avaliações e a distância entre lançamento e exibição.
 
-## Perguntas Iniciais
+Os CSVs intermediários e finais permanecem em [`sessao_da_tarde/datasets`](sessao_da_tarde/datasets) para preservar a linhagem dos dados.
 
-- Qual filme mais se repetiu na exibição?
-- Quantas vezes {X ator} apareceu na Sessão da Tarde? (Adam Sandler, Nicolas Cage, Will Smith, Jackie Chan, ...)
-- Historicamente, quais foram os melhores e os piores filmes passados na Sessão da Tarde?
+## Desenvolvimento local
 
-## Tasks
+O site usa os outputs salvos nos notebooks e, por padrão, não reexecuta código durante o build. Neste ambiente, use o Quarto com o Python de `~/.localvenv`:
 
-- [x] Dataset de Filmes passados na Sessão da Tarde
-  - [x] Criação (Scraping)
-  - [x] Limpeza do Dataset
-  - [x] Enriquecimento de informações adicionais
-- [ ] Informações sobre os filmes
-  - [x] Nota média
-  - [x] Data de lançamento
-  - [x] id para consulta posterior
-  - [x] Título em inglês
-  - [x] Principais atores
-  - [ ] Gênero e público alvo
-- [ ] Estudo utilizando o dataset
-  - [ ] Qual o gênero e o público alvo da maioria dos filmes?
-  - [ ] Qual ator foi estrela mais vezes? (qual mais apareceu)
-  - [ ] Quais são o melhor e o pior filme já passado?
-  - [ ] Tentar prever futuros filmes que passarão.
+```bash
+QUARTO_PYTHON=~/.localvenv/bin/python quarto preview
+```
 
-## Veja o WIP
+Para gerar a versão estática:
 
-### [Análise de Dados](/sessao_da_tarde/Analysis.ipynb)
+```bash
+QUARTO_PYTHON=~/.localvenv/bin/python quarto render
+```
 
-### [Limpeza dos Dados](/sessao_da_tarde/cleaning.ipynb)
+O resultado é escrito em `_site/`.
 
-### [Criação dos Dados](/sessao_da_tarde/scraping.ipynb)
+### Reexecutar os notebooks
 
-## Referências
+As dependências estão registradas em `requirements.txt`. Para preparar o ambiente existente:
 
-Os dados foram coletados a partir do [TV Globo Wiki - Filmes exibidos na Sessão da Tarde](https://tvglobo.fandom.com/pt-br/wiki/Lista_de_filmes_exibidos_na_Sess%C3%A3o_da_Tarde), que é mantido por usuários e abriga a coleção de filmes que são exibidos desde 1984 até a data de hoje.
-As informações sobre os filmes coletados foram disponibilizados pelo [The Movie Database](https://www.themoviedb.org).
+```bash
+~/.localvenv/bin/python -m pip install -r requirements.txt
+```
+
+Execute os notebooks na ordem do estudo. A coleta depende da estrutura atual de uma página externa; para apenas atualizar a análise a partir dos CSVs versionados, reexecute `Analysis.ipynb` sem rodar o scraping.
+
+## Publicação
+
+O workflow [`.github/workflows/publish.yml`](.github/workflows/publish.yml) renderiza o projeto e publica o resultado na branch `gh-pages` a cada push em `main` ou por acionamento manual.
+
+Na primeira publicação, confirme em **Settings → Pages** que a fonte está configurada como **Deploy from a branch**, usando `gh-pages` e a pasta `/ (root)`. Em **Settings → Actions → General**, o workflow precisa de permissão de leitura e escrita para criar ou atualizar essa branch.
+
+## Escopo atual
+
+A análise é exploratória e está em andamento. Perguntas sobre gênero, público-alvo e previsão de futuras exibições permanecem como trabalho futuro; o site não as apresenta como resultados concluídos.

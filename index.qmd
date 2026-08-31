@@ -1,0 +1,124 @@
+---
+title: "Sessão da Tarde, vista pelos dados"
+description: "Uma investigação reproduzível sobre décadas de filmes exibidos no programa."
+page-layout: full
+toc: false
+image: img/sessaodatarde.jpeg
+---
+
+::: {.hero}
+::: {.grid}
+::: {.g-col-12 .g-col-lg-7 .hero-copy}
+::: {.eyebrow}
+ESTUDO DE DADOS · TELEVISÃO E CINEMA
+:::
+
+# Sessão da Tarde, vista pelos dados
+
+Uma investigação sobre os filmes exibidos no programa: quais títulos voltam à grade, quem aparece com mais frequência e quanto tempo separa o lançamento de uma exibição.
+
+O projeto transforma registros públicos em uma base estruturada, documenta sua curadoria e abre uma análise exploratória reproduzível.
+
+[Começar pela análise](sessao_da_tarde/Analysis.ipynb){.btn .btn-primary .btn-lg} [Entender o projeto](projeto.qmd){.btn .btn-outline-primary .btn-lg}
+:::
+
+::: {.g-col-12 .g-col-lg-5}
+![](img/sessaodatarde.jpeg){.hero-image fig-alt="Identidade visual da Sessão da Tarde"}
+:::
+:::
+:::
+
+::: {.page-shell}
+
+::: {.stats-strip aria-label="Resumo da base de dados"}
+::: {.stat}
+<strong>10.466</strong>
+<span>registros na coleta bruta</span>
+:::
+::: {.stat}
+<strong>9.900</strong>
+<span>registros após a limpeza</span>
+:::
+::: {.stat}
+<strong>8.521</strong>
+<span>exibições com dados de filmes</span>
+:::
+::: {.stat}
+<strong>1974–2023</strong>
+<span>período presente nos arquivos</span>
+:::
+:::
+
+## Uma memória afetiva transformada em pergunta
+
+A motivação nasce de uma experiência pessoal registrada pelo projeto: a Sessão da Tarde fez parte da infância de seu autor e permaneceu associada ao contato com filmes, cultura e arte. A análise organiza essa curiosidade em perguntas verificáveis.
+
+::: {.question-grid}
+::: {.question-card}
+### Repetição
+
+Quais filmes foram exibidos mais vezes?
+:::
+
+::: {.question-card}
+### Elenco
+
+Quais atores aparecem com maior frequência nos créditos disponíveis?
+:::
+
+::: {.question-card}
+### Tempo e avaliação
+
+Como a distância entre lançamento e exibição se relaciona com as avaliações dos filmes?
+:::
+:::
+
+## Do registro à análise
+
+O estudo tem uma sequência simples: coletar a grade, retirar ocorrências que não representam um filme e enriquecer os títulos antes de explorar padrões. Cada etapa abaixo é uma página de notebook estática, com código recolhível e resultados preservados.
+
+::: {.stage-grid}
+::: {.stage-card}
+<span class="stage-number">01</span>
+
+### [Construção da base](sessao_da_tarde/scraping.ipynb)
+
+Extração dos registros de exibição mantidos no TV Globo Wiki e organização em data, título e observações.
+
+[Ver a coleta →](sessao_da_tarde/scraping.ipynb){.card-link}
+:::
+
+::: {.stage-card}
+<span class="stage-number">02</span>
+
+### [Curadoria e limpeza](sessao_da_tarde/cleaning.ipynb)
+
+Remoção de datas sem filme, tratamento de títulos ausentes e normalização de exibições regionais.
+
+[Ver a limpeza →](sessao_da_tarde/cleaning.ipynb){.card-link}
+:::
+
+::: {.stage-card .stage-card-featured}
+<span class="stage-number">03</span>
+
+### [Análise exploratória](sessao_da_tarde/Analysis.ipynb)
+
+Frequência de elenco, idade dos filmes na grade, avaliações e exploração de agrupamentos.
+
+[Abrir a análise →](sessao_da_tarde/Analysis.ipynb){.card-link}
+:::
+:::
+
+::: {.callout-note appearance="simple" icon=false}
+## Como ler os resultados
+
+Esta é uma análise exploratória em andamento. Os dados de exibição vêm de uma fonte comunitária e o enriquecimento de filmes usa o The Movie Database. Questões planejadas sobre gênero, público-alvo e previsão de futuras exibições ainda não são apresentadas como conclusões.
+:::
+
+## Fontes, método e reprodutibilidade
+
+O repositório mantém os CSVs de cada estágio e os notebooks que documentam coleta, limpeza e análise. Isso permite distinguir o registro original, as decisões de curadoria e a base enriquecida usada nos gráficos.
+
+[Conhecer dados e limitações](projeto.qmd){.btn .btn-outline-primary} [Percorrer o estudo de caso](estudo.qmd){.btn .btn-primary}
+
+:::

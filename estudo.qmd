@@ -1,0 +1,55 @@
+---
+title: "Estudo de caso"
+subtitle: "Uma leitura guiada da coleta à exploração"
+description: "Percurso analítico do projeto Sessão da Tarde."
+toc: false
+---
+
+O projeto é apresentado em três etapas. A ordem importa: a análise final depende de uma listagem coletada, de regras de limpeza e do enriquecimento com metadados de filmes.
+
+::: {.study-path}
+::: {.path-step}
+<span class="stage-number">01 · ORIGEM</span>
+
+## [Construção da base](sessao_da_tarde/scraping.ipynb)
+
+O primeiro notebook transforma a listagem do TV Globo Wiki em uma tabela de datas, títulos e observações. Ele documenta a lógica original de extração e gera `whole_century.csv`.
+
+**Entrada:** página HTML externa<br>
+**Saída:** 10.466 registros brutos
+
+[Ler esta etapa](sessao_da_tarde/scraping.ipynb){.btn .btn-outline-primary}
+:::
+
+::: {.path-step}
+<span class="stage-number">02 · CURADORIA</span>
+
+## [Limpeza dos registros](sessao_da_tarde/cleaning.ipynb)
+
+O segundo notebook exclui linhas sem título e dias identificados como sem exibição. Quando a fonte registra filmes diferentes para regiões distintas na mesma linha, mantém o primeiro título.
+
+**Entrada:** `whole_century.csv`<br>
+**Saída:** 9.900 registros limpos
+
+[Ler esta etapa](sessao_da_tarde/cleaning.ipynb){.btn .btn-outline-primary}
+:::
+
+::: {.path-step .path-step-featured}
+<span class="stage-number">03 · EXPLORAÇÃO</span>
+
+## [Padrões na programação](sessao_da_tarde/Analysis.ipynb)
+
+O notebook final usa a base enriquecida para explorar recorrência de elenco, anos de lançamento, avaliações e o intervalo entre lançamento e exibição. Também testa agrupamentos como ferramenta exploratória.
+
+**Entrada:** `sdtcentury2.csv`<br>
+**Recorte analítico:** registros com datas válidas e sem lançamento posterior à exibição
+
+[Abrir a análise](sessao_da_tarde/Analysis.ipynb){.btn .btn-primary}
+:::
+:::
+
+::: {.callout-tip appearance="simple" icon=false}
+## Para leitores não técnicos
+
+O código aparece recolhido por padrão. Abra “Ver código” quando quiser conferir como uma tabela ou gráfico foi produzido; os textos e resultados podem ser lidos sem executar nada.
+:::

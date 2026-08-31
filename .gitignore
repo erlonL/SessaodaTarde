@@ -1,10 +1,17 @@
 /.ipynb_checkpoints
 *.swp
 *.log
-*.ipynb
-*.py
 
-!Analysis.ipynb
 domingo_maior
 machine_learning
 tela_quente
+
+# Quarto e ambiente local
+_site/
+.quarto/
+.venv/
+__pycache__/
+.DS_Store
+
+/.quarto/
+**/*.quarto_ipynb
