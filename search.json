@@ -88,7 +88,7 @@
     "href": "index.html",
     "title": "Sessão da Tarde, vista pelos dados",
     "section": "",
-    "text": "Televisão · Cinema · Ciência de dados\n\n\n\n\n\n\nUma memória afetiva também pode ser investigada. Este projeto transforma registros de exibição em uma base estruturada para observar títulos recorrentes, presenças no elenco e o tempo entre lançamento e exibição.\n\nPercorrer a análise Entender o projeto\n\n\n\n\nEscopo da base\n\n\n1974–2023 período presente nos arquivos\n\n\n10.466 registros na coleta bruta\n\n\n8.521 exibições enriquecidas\n\n\n\ncoleta\n\n\ncuradoria\n\n\nanálise"
+    "text": "ESTUDO DE DADOS · TELEVISÃO E CINEMA\n\n\n\nUma investigação sobre os filmes exibidos no programa: quais títulos voltam à grade, quem aparece com mais frequência e quanto tempo separa o lançamento de uma exibição.\nO projeto transforma registros públicos em uma base estruturada, documenta sua curadoria e abre uma análise exploratória reproduzível.\nPercorrer a análise Entender o projeto"
   },
   {
     "objectID": "index.html#uma-lembrança-pessoal-vira-pergunta-de-dados.",
