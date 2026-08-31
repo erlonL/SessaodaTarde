@@ -45,7 +45,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bb5623517c2008e3c87e80b6f78b0999.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3a8c703fb520cc07f7eefc65bb59a90d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -180,105 +180,160 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="hero">
-<div class="grid">
-<div class="g-col-12 g-col-lg-7 hero-copy">
-<div class="eyebrow">
-<p>ESTUDO DE DADOS · TELEVISÃO E CINEMA</p>
-</div>
-<section id="sessão-da-tarde-vista-pelos-dados" class="level1">
-<h1>Sessão da Tarde, vista pelos dados</h1>
-<p>Uma investigação sobre os filmes exibidos no programa: quais títulos voltam à grade, quem aparece com mais frequência e quanto tempo separa o lançamento de uma exibição.</p>
-<p>O projeto transforma registros públicos em uma base estruturada, documenta sua curadoria e abre uma análise exploratória reproduzível.</p>
-<p><a href="./sessao_da_tarde/Analysis.html" class="btn btn-primary btn-lg">Começar pela análise</a> <a href="./projeto.html" class="btn btn-outline-primary btn-lg">Entender o projeto</a></p>
+<div class="home-hero">
+<div class="hero-lead">
+<p class="eyebrow">
+Televisão · Cinema · Ciência de dados
+</p>
+<section id="o-que-décadas-de-filmes-revelam-sobre-a-sessão-da-tarde" class="level1">
+<h1>O que décadas de filmes revelam sobre a Sessão da Tarde?</h1>
 </section>
 </div>
-<div class="g-col-12 g-col-lg-5">
-<p><img src="img/sessaodatarde.jpeg" class="hero-image img-fluid" alt="Identidade visual da Sessão da Tarde"></p>
+<div class="hero-brief">
+<p>Uma memória afetiva também pode ser investigada. Este projeto transforma registros de exibição em uma base estruturada para observar títulos recorrentes, presenças no elenco e o tempo entre lançamento e exibição.</p>
+<div class="hero-actions">
+<p><a href="./sessao_da_tarde/Analysis.html" class="btn btn-primary btn-lg">Percorrer a análise</a> <a href="./projeto.html" class="hero-text-link">Entender o projeto</a></p>
 </div>
 </div>
+<div class="hero-scope" aria-label="Escopo e fluxo do projeto">
+<p class="scope-label">
+Escopo da base
+</p>
+<div class="scope-fact">
+<p><span class="scope-value">1974–2023</span> <span class="scope-description">período presente nos arquivos</span></p>
 </div>
-<div class="page-shell">
-<div class="stats-strip" aria-label="Resumo da base de dados">
-<div class="stat">
-<p><strong>10.466</strong> <span>registros na coleta bruta</span></p>
+<div class="scope-fact">
+<p><span class="scope-value">10.466</span> <span class="scope-description">registros na coleta bruta</span></p>
 </div>
-<div class="stat">
-<p><strong>9.900</strong> <span>registros após a limpeza</span></p>
+<div class="scope-fact">
+<p><span class="scope-value">8.521</span> <span class="scope-description">exibições enriquecidas</span></p>
 </div>
-<div class="stat">
-<p><strong>8.521</strong> <span>exibições com dados de filmes</span></p>
+<ol class="scope-path" aria-label="Síntese do fluxo analítico">
+<li>
+coleta
+</li>
+<li>
+curadoria
+</li>
+<li>
+análise
+</li>
+</ol>
 </div>
-<div class="stat">
-<p><strong>1974–2023</strong> <span>período presente nos arquivos</span></p>
 </div>
-</div>
-<section id="uma-memória-afetiva-transformada-em-pergunta" class="level2">
-<h2 class="anchored" data-anchor-id="uma-memória-afetiva-transformada-em-pergunta">Uma memória afetiva transformada em pergunta</h2>
-<p>A motivação nasce de uma experiência pessoal registrada pelo projeto: a Sessão da Tarde fez parte da infância de seu autor e permaneceu associada ao contato com filmes, cultura e arte. A análise organiza essa curiosidade em perguntas verificáveis.</p>
-<div class="question-grid">
-<section id="repetição" class="level3 question-card">
-<h3 class="anchored" data-anchor-id="repetição">Repetição</h3>
-<p>Quais filmes foram exibidos mais vezes?</p>
-</section>
-<section id="elenco" class="level3 question-card">
-<h3 class="anchored" data-anchor-id="elenco">Elenco</h3>
-<p>Quais atores aparecem com maior frequência nos créditos disponíveis?</p>
-</section>
-<section id="tempo-e-avaliação" class="level3 question-card">
-<h3 class="anchored" data-anchor-id="tempo-e-avaliação">Tempo e avaliação</h3>
-<p>Como a distância entre lançamento e exibição se relaciona com as avaliações dos filmes?</p>
-</section>
-</div>
-</section>
-<section id="do-registro-à-análise" class="level2">
-<h2 class="anchored" data-anchor-id="do-registro-à-análise">Do registro à análise</h2>
-<p>O estudo tem uma sequência simples: coletar a grade, retirar ocorrências que não representam um filme e enriquecer os títulos antes de explorar padrões. Cada etapa abaixo é uma página de notebook estática, com código recolhível e resultados preservados.</p>
-<div class="stage-grid">
-<div class="stage-card">
-<p><span class="stage-number">01</span></p>
-<section id="construção-da-base" class="level3">
-<h3 class="anchored" data-anchor-id="construção-da-base"><a href="./sessao_da_tarde/scraping.html">Construção da base</a></h3>
-<p>Extração dos registros de exibição mantidos no TV Globo Wiki e organização em data, título e observações.</p>
-<p><a href="./sessao_da_tarde/scraping.html" class="card-link">Ver a coleta →</a></p>
+<div class="home-chapter question-chapter">
+<div class="chapter-heading">
+<p class="section-index">
+01 · Ponto de partida
+</p>
+<section id="uma-lembrança-pessoal-vira-pergunta-de-dados." class="level2">
+<h2 class="anchored" data-anchor-id="uma-lembrança-pessoal-vira-pergunta-de-dados.">Uma lembrança pessoal vira pergunta de dados.</h2>
 </section>
 </div>
-<div class="stage-card">
-<p><span class="stage-number">02</span></p>
-<section id="curadoria-e-limpeza" class="level3">
-<h3 class="anchored" data-anchor-id="curadoria-e-limpeza"><a href="./sessao_da_tarde/cleaning.html">Curadoria e limpeza</a></h3>
-<p>Remoção de datas sem filme, tratamento de títulos ausentes e normalização de exibições regionais.</p>
-<p><a href="./sessao_da_tarde/cleaning.html" class="card-link">Ver a limpeza →</a></p>
+<div class="chapter-copy">
+<p>A Sessão da Tarde fez parte da infância do autor e permaneceu associada ao contato com filmes, cultura e arte. O projeto organiza essa curiosidade em perguntas que podem ser verificadas na programação registrada.</p>
+<p><strong>Quais filmes voltam mais vezes? Quem aparece com maior frequência? Quanto tempo costuma separar o lançamento de uma exibição?</strong> A publicação mantém essas perguntas próximas das decisões de coleta e limpeza que condicionam qualquer resposta.</p>
+</div>
+</div>
+<div class="context-section">
+<div class="context-inner">
+<div class="context-heading">
+<p class="section-index">
+02 · Do registro ao contexto
+</p>
+<section id="uma-grade-de-televisão-vira-uma-base-analisável." class="level2">
+<h2 class="anchored" data-anchor-id="uma-grade-de-televisão-vira-uma-base-analisável.">Uma grade de televisão vira uma base analisável.</h2>
 </section>
 </div>
-<div class="stage-card stage-card-featured">
-<p><span class="stage-number">03</span></p>
-<section id="análise-exploratória" class="level3">
-<h3 class="anchored" data-anchor-id="análise-exploratória"><a href="./sessao_da_tarde/Analysis.html">Análise exploratória</a></h3>
-<p>Frequência de elenco, idade dos filmes na grade, avaliações e exploração de agrupamentos.</p>
-<p><a href="./sessao_da_tarde/Analysis.html" class="card-link">Abrir a análise →</a></p>
+<div class="context-copy">
+<p>A fonte original é uma cronologia mantida no TV Globo Wiki. O projeto estrutura suas datas, títulos e observações; remove ocorrências que não representam um filme; e usa o The Movie Database para acrescentar lançamento, avaliação e elenco.</p>
+</div>
+<div class="context-visual">
+<p><img src="img/sessaodatarde.jpeg" class="context-image img-fluid" alt="Identidade visual da Sessão da Tarde"></p>
+</div>
+<div class="context-roles">
+<div class="context-role">
+<p><span class="role-number">01</span></p>
+<section id="registro-de-exibição" class="level3">
+<h3 class="anchored" data-anchor-id="registro-de-exibição">Registro de exibição</h3>
+<p>Data, título e observações preservam o que a listagem informa sobre a grade.</p>
+</section>
+</div>
+<div class="context-role">
+<p><span class="role-number">02</span></p>
+<section id="metadados-de-cinema" class="level3">
+<h3 class="anchored" data-anchor-id="metadados-de-cinema">Metadados de cinema</h3>
+<p>Identificador, lançamento, avaliação e elenco tornam os títulos comparáveis.</p>
 </section>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Nota</span>Como ler os resultados
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Esta é uma análise exploratória em andamento. Os dados de exibição vêm de uma fonte comunitária e o enriquecimento de filmes usa o The Movie Database. Questões planejadas sobre gênero, público-alvo e previsão de futuras exibições ainda não são apresentadas como conclusões.</p>
+<p class="context-link-wrap">
+<a href="./projeto.html" class="context-link">Conhecer os dados e suas limitações →</a>
+</p>
+<div class="interpretation-note">
+<p class="note-label">
+Leitura responsável
+</p>
+<p>Os números descrevem os arquivos deste repositório. A lista de exibições vem de uma fonte comunitária, o enriquecimento contém ausências e a avaliação do TMDB é um retrato do momento da coleta — não uma medida da recepção do filme na televisão.</p>
 </div>
 </div>
+</div>
+<div class="journey-section">
+<div class="journey-inner">
+<div class="journey-heading">
+<p class="section-index">
+03 · Percurso analítico
+</p>
+<section id="da-página-pública-aos-padrões-na-programação." class="level2">
+<h2 class="anchored" data-anchor-id="da-página-pública-aos-padrões-na-programação.">Da página pública aos padrões na programação.</h2>
 </section>
-<section id="fontes-método-e-reprodutibilidade" class="level2">
-<h2 class="anchored" data-anchor-id="fontes-método-e-reprodutibilidade">Fontes, método e reprodutibilidade</h2>
-<p>O repositório mantém os CSVs de cada estágio e os notebooks que documentam coleta, limpeza e análise. Isso permite distinguir o registro original, as decisões de curadoria e a base enriquecida usada nos gráficos.</p>
-<p><a href="./projeto.html" class="btn btn-outline-primary">Conhecer dados e limitações</a> <a href="./estudo.html" class="btn btn-primary">Percorrer o estudo de caso</a></p>
+</div>
+<div class="journey-intro">
+<p>A leitura pública acompanha a ordem real do trabalho. Cada etapa abre um notebook preservado, com o código recolhido por padrão e seus resultados disponíveis.</p>
+</div>
+<div class="journey-list">
+<div class="journey-step">
+<p><span class="journey-number">01</span></p>
+<section id="construir-a-base" class="level3">
+<h3 class="anchored" data-anchor-id="construir-a-base"><a href="./sessao_da_tarde/scraping.html">Construir a base</a></h3>
+<p><span class="journey-description">Extrair datas, títulos e observações da listagem pública.</span></p>
+<p><a href="./sessao_da_tarde/scraping.html" class="journey-action">Abrir coleta →</a></p>
 </section>
+</div>
+<div class="journey-step">
+<p><span class="journey-number">02</span></p>
+<section id="curar-os-registros" class="level3">
+<h3 class="anchored" data-anchor-id="curar-os-registros"><a href="./sessao_da_tarde/cleaning.html">Curar os registros</a></h3>
+<p><span class="journey-description">Retirar dias sem filme e tratar exibições regionais.</span></p>
+<p><a href="./sessao_da_tarde/cleaning.html" class="journey-action">Abrir limpeza →</a></p>
+</section>
+</div>
+<div class="journey-step">
+<p><span class="journey-number">03</span></p>
+<section id="explorar-os-padrões" class="level3">
+<h3 class="anchored" data-anchor-id="explorar-os-padrões"><a href="./sessao_da_tarde/Analysis.html">Explorar os padrões</a></h3>
+<p><span class="journey-description">Comparar recorrência, elenco, idade dos filmes e avaliações.</span></p>
+<p><a href="./sessao_da_tarde/Analysis.html" class="journey-action">Abrir resultados →</a></p>
+</section>
+</div>
+</div>
+<p><a href="./estudo.html" class="journey-overview">Ver o percurso completo do estudo de caso</a></p>
+</div>
+</div>
+<div class="provenance-section">
+<div class="provenance-heading">
+<p class="section-index">
+04 · Proveniência
+</p>
+<section id="fontes-abertas-decisões-visíveis." class="level2">
+<h2 class="anchored" data-anchor-id="fontes-abertas-decisões-visíveis.">Fontes abertas, decisões visíveis.</h2>
+</section>
+</div>
+<div class="provenance-copy">
+<p>A publicação mantém os CSVs de cada estágio e os notebooks que registram a coleta, a limpeza e a exploração. Assim, o visitante pode separar o dado recebido das escolhas feitas durante o tratamento.</p>
+<p><a href="./projeto.html">Examinar fontes e dicionário de dados →</a></p>
+<p><a href="https://github.com/erlonL/SessaodaTarde">Consultar código e arquivos no GitHub →</a></p>
+</div>
 </div>
 
 

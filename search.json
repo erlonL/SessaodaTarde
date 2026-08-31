@@ -88,28 +88,35 @@
     "href": "index.html",
     "title": "Sessão da Tarde, vista pelos dados",
     "section": "",
-    "text": "ESTUDO DE DADOS · TELEVISÃO E CINEMA\n\n\n\nUma investigação sobre os filmes exibidos no programa: quais títulos voltam à grade, quem aparece com mais frequência e quanto tempo separa o lançamento de uma exibição.\nO projeto transforma registros públicos em uma base estruturada, documenta sua curadoria e abre uma análise exploratória reproduzível.\nComeçar pela análise Entender o projeto"
+    "text": "Televisão · Cinema · Ciência de dados\n\n\n\n\n\n\nUma memória afetiva também pode ser investigada. Este projeto transforma registros de exibição em uma base estruturada para observar títulos recorrentes, presenças no elenco e o tempo entre lançamento e exibição.\n\nPercorrer a análise Entender o projeto\n\n\n\n\nEscopo da base\n\n\n1974–2023 período presente nos arquivos\n\n\n10.466 registros na coleta bruta\n\n\n8.521 exibições enriquecidas\n\n\n\ncoleta\n\n\ncuradoria\n\n\nanálise"
   },
   {
-    "objectID": "index.html#uma-memória-afetiva-transformada-em-pergunta",
-    "href": "index.html#uma-memória-afetiva-transformada-em-pergunta",
+    "objectID": "index.html#uma-lembrança-pessoal-vira-pergunta-de-dados.",
+    "href": "index.html#uma-lembrança-pessoal-vira-pergunta-de-dados.",
     "title": "Sessão da Tarde, vista pelos dados",
-    "section": "Uma memória afetiva transformada em pergunta",
-    "text": "Uma memória afetiva transformada em pergunta\nA motivação nasce de uma experiência pessoal registrada pelo projeto: a Sessão da Tarde fez parte da infância de seu autor e permaneceu associada ao contato com filmes, cultura e arte. A análise organiza essa curiosidade em perguntas verificáveis.\n\n\nRepetição\nQuais filmes foram exibidos mais vezes?\n\n\nElenco\nQuais atores aparecem com maior frequência nos créditos disponíveis?\n\n\nTempo e avaliação\nComo a distância entre lançamento e exibição se relaciona com as avaliações dos filmes?"
+    "section": "Uma lembrança pessoal vira pergunta de dados.",
+    "text": "Uma lembrança pessoal vira pergunta de dados."
   },
   {
-    "objectID": "index.html#do-registro-à-análise",
-    "href": "index.html#do-registro-à-análise",
+    "objectID": "index.html#uma-grade-de-televisão-vira-uma-base-analisável.",
+    "href": "index.html#uma-grade-de-televisão-vira-uma-base-analisável.",
     "title": "Sessão da Tarde, vista pelos dados",
-    "section": "Do registro à análise",
-    "text": "Do registro à análise\nO estudo tem uma sequência simples: coletar a grade, retirar ocorrências que não representam um filme e enriquecer os títulos antes de explorar padrões. Cada etapa abaixo é uma página de notebook estática, com código recolhível e resultados preservados.\n\n\n01\n\nConstrução da base\nExtração dos registros de exibição mantidos no TV Globo Wiki e organização em data, título e observações.\nVer a coleta →\n\n\n\n02\n\nCuradoria e limpeza\nRemoção de datas sem filme, tratamento de títulos ausentes e normalização de exibições regionais.\nVer a limpeza →\n\n\n\n03\n\nAnálise exploratória\nFrequência de elenco, idade dos filmes na grade, avaliações e exploração de agrupamentos.\nAbrir a análise →\n\n\n\n\n\n\n\n\n\nNotaComo ler os resultados\n\n\n\nEsta é uma análise exploratória em andamento. Os dados de exibição vêm de uma fonte comunitária e o enriquecimento de filmes usa o The Movie Database. Questões planejadas sobre gênero, público-alvo e previsão de futuras exibições ainda não são apresentadas como conclusões."
+    "section": "Uma grade de televisão vira uma base analisável.",
+    "text": "Uma grade de televisão vira uma base analisável."
   },
   {
-    "objectID": "index.html#fontes-método-e-reprodutibilidade",
-    "href": "index.html#fontes-método-e-reprodutibilidade",
+    "objectID": "index.html#da-página-pública-aos-padrões-na-programação.",
+    "href": "index.html#da-página-pública-aos-padrões-na-programação.",
     "title": "Sessão da Tarde, vista pelos dados",
-    "section": "Fontes, método e reprodutibilidade",
-    "text": "Fontes, método e reprodutibilidade\nO repositório mantém os CSVs de cada estágio e os notebooks que documentam coleta, limpeza e análise. Isso permite distinguir o registro original, as decisões de curadoria e a base enriquecida usada nos gráficos.\nConhecer dados e limitações Percorrer o estudo de caso"
+    "section": "Da página pública aos padrões na programação.",
+    "text": "Da página pública aos padrões na programação."
+  },
+  {
+    "objectID": "index.html#fontes-abertas-decisões-visíveis.",
+    "href": "index.html#fontes-abertas-decisões-visíveis.",
+    "title": "Sessão da Tarde, vista pelos dados",
+    "section": "Fontes abertas, decisões visíveis.",
+    "text": "Fontes abertas, decisões visíveis."
   },
   {
     "objectID": "estudo.html",
