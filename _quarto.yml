@@ -11,7 +11,7 @@ website:
   title: "Sessão da Tarde"
   description: "Um estudo de dados sobre os filmes exibidos na Sessão da Tarde."
   site-url: "https://erlonl.github.io/SessaodaTarde/"
-  favicon: img/sessaodatarde.jpeg
+  favicon: img/favicon.svg
   repo-url: "https://github.com/erlonL/SessaodaTarde"
   repo-actions: [source, issue]
   open-graph: true
@@ -55,8 +55,7 @@ execute:
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: [cosmo, theme.scss]
     toc: true
     toc-title: Nesta página
     toc-depth: 3
