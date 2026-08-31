@@ -77,6 +77,12 @@ h3 {
 }
 
 .hero {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: none;
+  margin-left: -50vw;
+  margin-right: -50vw;
   background:
     radial-gradient(circle at 8% 15%, rgb(255 255 255 / 9%) 0 5rem, transparent 5.1rem),
     linear-gradient(125deg, #0d3457 0%, var(--sdt-navy) 58%, #175b82 100%);
